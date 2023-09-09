@@ -1,0 +1,192 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "1f4963c9-c224-40ee-a71d-3c68901b38fd",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "the top director is Stanley Kubrick and his movie are 8\n"
+     ]
+    }
+   ],
+   "source": [
+    "# 1. Print the top director with maximum number of movies.\n",
+    "\n",
+    "import json\n",
+    "\n",
+    "def read_json_file(file_name):\n",
+    "    with open(file_name) as json_file:\n",
+    "        imdb_movie_data = json.load(json_file)\n",
+    "        return imdb_movie_data\n",
+    "    \n",
+    "def top_dir_with_max_movies(file_name):\n",
+    "    imdb_movie_data = read_json_file(file_name)\n",
+    "    dir = {}\n",
+    "    for i in imdb_movie_data:\n",
+    "        director = i['director']\n",
+    "        if director in dir:\n",
+    "            dir[director] += 1\n",
+    "        else:\n",
+    "            dir[director] = 1\n",
+    "    return dir\n",
+    "top_dir = top_dir_with_max_movies('imdb_movies.json')\n",
+    "top_director = max(top_dir.items(),key=lambda x: x[1])\n",
+    "print(f\"the top director is {top_director[0]} and his movie are {top_director[1]}\")\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "76d3ea3f-9ac8-416b-bafd-777d632678f8",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "The popular genere watched by audiance is (('Drama', ' Romance'), 7)\n"
+     ]
+    }
+   ],
+   "source": [
+    "# 2. Print the popular genere watched by most of the audiance.\n",
+    "\n",
+    "def popular_genere_watched_by_most(file_name):\n",
+    "    imdb_movie_data = read_json_file(file_name)\n",
+    "    d = {}\n",
+    "    for i in imdb_movie_data:\n",
+    "        genere = i[\"genre\"]\n",
+    "        if tuple(genere) in d:\n",
+    "            d[tuple(genere)] += 1\n",
+    "        else:\n",
+    "            d[tuple(genere)] = 1\n",
+    "    return d\n",
+    "\n",
+    "top_genere_watched = popular_genere_watched_by_most('imdb_movies.json')\n",
+    "top_genere_watched = max(top_genere_watched.items(),key=lambda x: x[1])\n",
+    "print(f\"The popular genere watched by audiance is {top_genere_watched}\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "8f12c7ec-530b-4f9f-a78f-a84965315e5b",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Movie: The Twilight Zone with IMDb score: 9.5\n",
+      "Movie: The Godfather with IMDb score: 9.2\n",
+      "Movie: Il buono, il brutto, il cattivo. with IMDb score: 9.0\n",
+      "Movie: The Simpsons with IMDb score: 9.0\n",
+      "Movie: Pulp Fiction with IMDb score: 9.0\n",
+      "Movie: The X Files with IMDb score: 9.0\n",
+      "Movie: I Love Lucy with IMDb score: 9.0\n",
+      "Movie: One Flew Over the Cuckoos Nest with IMDb score: 8.9\n",
+      "Movie: Star Wars with IMDb score: 8.8\n",
+      "Movie: Casablanca with IMDb score: 8.8\n"
+     ]
+    }
+   ],
+   "source": [
+    "# 3. Print out the top ten movies, according to imdb score.\n",
+    "\n",
+    "def get_top_ten_movies_by_imdb_score(file_name):\n",
+    "    imdb_movie_data = read_json_file(file_name)\n",
+    "    sorted_movies = sorted(imdb_movie_data, key=lambda x: x['imdb_score'], reverse=True)\n",
+    "    top_10_movies = sorted_movies[:10]\n",
+    "    return top_10_movies\n",
+    "top_movies = get_top_ten_movies_by_imdb_score('imdb_movies.json')\n",
+    "for movie in top_movies:\n",
+    "    print(f\"Movie: {movie['name']} with IMDb score: {movie['imdb_score']}\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "id": "c054019a-8974-4d9f-a43d-d859fe5fcbeb",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "the least watched movie based on their imdb score is : ('The Tin Man', 4.6)\n"
+     ]
+    }
+   ],
+   "source": [
+    "# 4. Print the least watched movie based on their imdb score.\n",
+    "def least_watched_movie_by_imdb_score(file_name):\n",
+    "    imdb_movie_data = read_json_file(file_name)\n",
+    "    d ={}\n",
+    "    for i in imdb_movie_data:\n",
+    "        movie_name = i[\"name\"]\n",
+    "        d[movie_name] = i[\"imdb_score\"]\n",
+    "    return d\n",
+    "\n",
+    "least_watched_movie_imdb_score = least_watched_movie_by_imdb_score('imdb_movies.json')\n",
+    "least_watched_movie_imdb_score = min(least_watched_movie_imdb_score.items(),key = lambda x:x[1])\n",
+    "\n",
+    "print(f\"the least watched movie based on their imdb score is : {least_watched_movie_imdb_score}\")\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "339e69ff-6900-4013-bd58-415102e34b33",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "the best director in first hundred movies is : Ivan Reitman\n"
+     ]
+    }
+   ],
+   "source": [
+    "def get_best_director_in_first_hundred_movies(file_name):\n",
+    "    imdb_movie_data = read_json_file(file_name)\n",
+    "    d = {}\n",
+    "    for movie in imdb_movie_data:\n",
+    "        director = movie[\"director\"]\n",
+    "        d[director] = movie[\"imdb_score\"]\n",
+    "    return d\n",
+    "best_director_in_hundred_movies = get_best_director_in_first_hundred_movies('imdb_movies.json')\n",
+    "best_director_in_hundred_movies= sorted(best_director_in_hundred_movies, key=lambda x: x[1], reverse=True)\n",
+    "best_director_in_hundred_movies = best_director_in_hundred_movies[:100]\n",
+    "best_director_in_hundred_movies = max(best_director_in_hundred_movies, key=lambda x: x[1])\n",
+    "print(f\"the best director in first hundred movies is : {best_director_in_hundred_movies}\")"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.10.9"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
